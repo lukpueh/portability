@@ -4,6 +4,7 @@ import __builtin__
 # I'm importing these so I can neuter the calls so that they aren't 
 # restricted...
 
+import os
 import sys
 import safe
 import nanny
@@ -251,6 +252,18 @@ def add_dy_support(_context):
   original_import_module = _context['dy_import_module']
 
   def _new_dy_import_module_symbols(module, callfunc="import"):
+    # Remember the path we are currently in. We need to change to 
+    # this script's dir (assuming it also contains dylink.r2py and 
+    # rest of the Repy runtime and libraries) so that dylink is 
+    # able to link in code from the runtime.
+    # This is required due to Repy safety measures that inhibit 
+    # dylink to access files outside of its directory. 
+    # Once dylink is done, we return to the previously-current 
+    # working dir.
+    previous_cwd = os.getcwd()
+    repyportability_dir = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(repyportability_dir)
+
     # If we are using repyportability, we want to check all pythonpath for
     # the file we are looking to import.
     COMMON_EXTENSIONS = ["", ".py", ".repy",".py.repy", ".pp", ".r2py"] 
@@ -264,11 +277,18 @@ def add_dy_support(_context):
       # return so we do not continue to look in other paths.
       if os.path.isfile(possiblefilenamewithpath):
         filenamewithpath = possiblefilenamewithpath
-        return original_import_module(filenamewithpath, callfunc)
+        importedmodule = original_import_module(filenamewithpath, callfunc)
+        os.chdir(previous_cwd)
+        return importedmodule
 
     # If we don't find the file, we just call down to dylink, and
     # let it raise the appropriate error.
-    return original_import_module(module, callfunc)
+    try:
+      importedmodule = original_import_module(module, callfunc)
+      return importedmodule
+    except:
+      os.chdir(previous_cwd)
+      raise
 
   _context['dy_import_module'] = _new_dy_import_module_symbols
 
