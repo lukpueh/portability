@@ -287,8 +287,9 @@ def add_dy_support(_context):
       importedmodule = original_import_module(module, callfunc)
       return importedmodule
     except:
-      os.chdir(previous_cwd)
       raise
+    finally:
+      os.chdir(previous_cwd)
 
   _context['dy_import_module'] = _new_dy_import_module_symbols
 
