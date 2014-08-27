@@ -1,0 +1,7 @@
+../*
+repy_v2/*
+seattlelib_v2/*
+common/*
+common/utf/*
+# Tests
+test ../tests/*
