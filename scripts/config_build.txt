@@ -2,6 +2,6 @@
 DEPENDENCIES/repy_v2/*
 DEPENDENCIES/seattlelib_v2/*
 DEPENDENCIES/common/*
-DEPENDENCIES/common/utf/*
 # Tests
+test DEPENDENCIES/common/utf/*
 test tests/*
