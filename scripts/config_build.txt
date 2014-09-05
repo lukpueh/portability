@@ -1,7 +1,7 @@
-../*
-repy_v2/*
-seattlelib_v2/*
-common/*
-common/utf/*
+./*
+DEPENDENCIES/repy_v2/*
+DEPENDENCIES/seattlelib_v2/*
+DEPENDENCIES/common/*
+DEPENDENCIES/common/utf/*
 # Tests
-test ../tests/*
+test tests/*
