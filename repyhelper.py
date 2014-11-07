@@ -44,7 +44,7 @@ WARNING_LABEL = """
 ### Deleting this file forces regeneration of a repy translation
 
 """
-
+# add 'coding: utf-8' to deal with ASCII characters problem
 ENCODING_STRING = """# -*- coding: utf-8 -*-"""
 
 class TranslationError(Exception):
